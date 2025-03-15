@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Constants\UserRoles;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class UserController extends Controller
     {
         $users = User::paginate(5);
 
-        return view('user.index', ['users' => $users]);
+        return view('user.index', ['users' => $users, 'roles' => UserRoles::class]);
     }
 
     public function create()
@@ -36,7 +37,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        return view('user.edit', ['user' => $user]);
+        return view('user.edit', ['user' => $user, 'roles' => UserRoles::class]);
     }
 
     public function update(UserRequest $request) 
@@ -53,7 +54,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return view('user.show', ['user' => $user]);
+        return view('user.show', ['user' => $user, 'roles' => UserRoles::class]);
     }
 
     public function destroy($id) {

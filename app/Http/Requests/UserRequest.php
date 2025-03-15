@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Constants\UserRoles;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +15,7 @@ class UserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (auth()->user()->type == 0) 
+        if (auth()->user()->type == UserRoles::PARTNER) 
             return true;
         else
             return false;
@@ -46,7 +47,7 @@ class UserRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($userId),
             ],
             'value_hour' => 'required|regex:/^\d+(\.\d{1,2})?$/|min:0',
-            'type' => 'required|integer|min:0|max:4',
+            'type' => 'required|in:'.UserRoles::PARTNER.','.UserRoles::CONSULTANT.','.UserRoles::FINANCIER.','.UserRoles::INTERN.',',
             'password' => [
                 $rolePass,
                 'string',

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Constants\UserRoles;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,7 +30,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'type' => random_int(0, 3),
+            'type' => fake()->randomElement([UserRoles::PARTNER, UserRoles::CONSULTANT, UserRoles::FINANCIER, UserRoles::INTERN]),
             'value_hour' => random_int(10, 100),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

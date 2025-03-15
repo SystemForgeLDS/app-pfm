@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Constants\UserRoles;
 use App\Models\User;
 
 class UserPolicy
@@ -27,7 +28,7 @@ class UserPolicy
      */
     public function view(User $user): bool
     {
-        return ($user->type == 0);
+        return ($user->type == UserRoles::PARTNER);
     }
 
     /**
@@ -35,24 +36,24 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return ($user->type == 0);
+        return ($user->type == UserRoles::PARTNER);
     }
 
     // editar clientes (sócio e consultor)
     public function update(User $user): bool
     {
-        return ($user->type == 0);
+        return ($user->type == UserRoles::PARTNER);
     }
 
     public function delete(User $user): bool
     {
-        return ($user->type == 0);
+        return ($user->type == UserRoles::PARTNER);
     }
 
     //quem vê a coluna "ações" (talvez seja mudado)
     public function action(User $user): bool
     {
-        return ($user->type == 0);
+        return ($user->type == UserRoles::PARTNER);
     }
 
     public function censored(User $user): bool

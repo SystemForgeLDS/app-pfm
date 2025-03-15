@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Constants\UserRoles;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -29,28 +30,28 @@ class ClientPolicy
      */
     public function create(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
     // editar clientes (sócio e consultor)
     public function update(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
     public function delete(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
     //quem vê a coluna "ações" (talvez seja mudado)
     public function action(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
     public function censored(User $user): bool

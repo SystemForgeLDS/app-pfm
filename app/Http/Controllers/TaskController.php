@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\UserRoles;
 use App\Http\Requests\TaskRequest;
 use App\Models\Project;
 use App\Models\Task;
@@ -31,7 +32,7 @@ class TaskController extends Controller
         
         $user = User::findOrFail($request->user_id);
 
-        if ($user->type == 1) {
+        if ($user->type == UserRoles::CONSULTANT) {
             $task->user_id = $request->user_id;
         }
         else {
@@ -62,7 +63,7 @@ class TaskController extends Controller
 
         $user = User::findOrFail($request->user_id);
 
-        if ($user->type != 1)
+        if ($user->type != UserRoles::CONSULTANT)
             return redirect()->back()->withErrors(['error' => 'Selecione um consultor válido']);
 
         //****

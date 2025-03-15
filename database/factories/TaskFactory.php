@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Constants\UserRoles;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -34,7 +35,7 @@ class TaskFactory extends Factory
             'predicted_hour' => fake()->randomNumber(1),
             'completed' => $completed,
             'real_hour' => $real_hour,
-            'user_id' => User::where("type", 1)->pluck('id')->random(),
+            'user_id' => User::where("type", UserRoles::PARTNER)->pluck('id')->random(),
             'project_id' => Project::pluck('id')->random()
         ];
     }

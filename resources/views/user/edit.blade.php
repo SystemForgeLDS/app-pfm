@@ -34,7 +34,12 @@
             <div class="form-group">
                 <label for="type">Cargo</label>
                 <select id="type" name="type" class="form-select" required>
-                    @foreach(['Sócio', 'Consultor', 'Financeiro', 'Estagiário'] as $key => $type)
+                    @foreach([
+                            $roles::PARTNER => 'Sócio',
+                            $roles::CONSULTANT => 'Consultor',
+                            $roles::FINANCIER => 'Financeiro',
+                            $roles::INTERN => 'Estagiário'
+                        ] as $key => $type)
                         <option value="{{$key}}" {{ old('type', $user->type) == $key ? 'selected' : '' }}>{{ $type }}</option>
                     @endforeach
                 </select>

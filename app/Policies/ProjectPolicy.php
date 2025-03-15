@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Constants\UserRoles;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -29,8 +30,8 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
     /**
@@ -38,8 +39,8 @@ class ProjectPolicy
      */
     public function update(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
     /**
@@ -47,8 +48,8 @@ class ProjectPolicy
      */
     public function delete(User $user): bool
     {
-        return ($user->type == 0 || 
-                $user->type == 1);
+        return ($user->type == UserRoles::PARTNER || 
+                $user->type == UserRoles::CONSULTANT);
     }
 
 }

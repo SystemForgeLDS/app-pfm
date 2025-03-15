@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Constants\UserRoles;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
-            'type' => ['required', 'integer', 'min:0', 'max:3'],
+            'type' => ['required', 'required|in:'.UserRoles::PARTNER.','.UserRoles::CONSULTANT.','.UserRoles::FINANCIER.','.UserRoles::INTERN],
             'value_hour' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
