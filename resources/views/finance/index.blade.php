@@ -5,7 +5,10 @@
 @section('content')
 
 <div class="d-flex justify-content-between">
-    <h2>Lista de Receitas e Despesas</h2>
+    <div class="mb-3">
+        <button id="showTable1" class="btn btn-outline-danger active">Despesas</button>
+        <button id="showTable2" class="btn btn-outline-success">Receitas</button>
+    </div>
 
     <div class="dropdown">
         <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,68 +24,42 @@
 
 </div>
 
-<table class="table">
-    <thead class="table text-center">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">TÍTULO</th>
-            <th scope="col">VALOR</th>
-            <th scope="col">PROJETO</th>
-            <th scope="col">DATA PAGAMENTO</th>
-            <th scope="col">DATA VENCIMENTO</th>
-            @can('action', 'App\Models\Expense')
-                <th scope="col">AÇÕES</th>
-            @endcan
-        </tr>
-    </thead>
-    <tbody class="text-center">
-        @foreach ($finances as $finance)
-        <tr>
-            <td>{{ $finance->type }}</td>
-            
-            @if ($finance->type == 'Despesa')
-                <td><a href=" {{route('expense.show', $finance->id)}}" class="text-info-emphasis">{{ $finance->title }}</a></td>
-            @else
-                <td><a href=" {{route('receipt.show', $finance->id)}}" class="text-info-emphasis">{{ $finance->title }}</a></td>
-            @endif
 
-            <td>{{ $finance->value }}</td>
-            <td>{{ $finance->project->title }}</td>
-            <td>{{ $finance->payment_date ? $finance->payment_date : 'Aguardando Pagamento' }}</td>
-            <td>{{ $finance->end_date }}</td>
-            
-            @can('action', 'App\Models\Expense')
-                <td>
-                    <div class="d-flex justify-content-center align-items-center">
-                        @if ( $finance->type == 'Receita' )
-                            <a href="{{ route('receipt.edit', $finance->id) }}" class="btn btn-outline-primary me-1"><i class="material-icons">edit</i></a>
-                            
-                            @include('components.modal.delete', [
-                                'route' => 'receipt.destroy',
-                                'name' => $finance->title,
-                                'id' => $finance->id
-                            ])
-                        @else
-                            <a href="{{ route('expense.edit', $finance->id) }}" class="btn btn-outline-primary me-1"><i class="material-icons">edit</i></a>
-                                
-                            @include('components.modal.delete', [
-                                'route' => 'expense.destroy',
-                                'name' => $finance->title,
-                                'id' => $finance->id
-                            ])
-                        @endif
-                    </div>
-                </td>
-            @endcan
-        </tr>
-    @endforeach
-    </tbody>
-</table>
 
-<!-- Paginação -->
-<div class="d-flex justify-content-center pb-3 mt-auto">
-    {{ $finances->links('pagination::pagination') }}
+<div id="expense-table" class="">
+    @livewire(App\Livewire\ExpensesTable::class)
 </div>
+
+<div id="receipt-table" class="d-none">
+    @livewire(App\Livewire\ReceiptsTable::class)
+</div>
+
+<script>
+    document.getElementById('showTable1').addEventListener('click', function() {
+        document.getElementById('expense-table').classList.remove('d-none');
+        document.getElementById('receipt-table').classList.add('d-none');
+
+        this.classList.add('active');
+        document.getElementById('showTable2').classList.remove('active');
+    });
+
+    document.getElementById('showTable2').addEventListener('click', function() {
+        document.getElementById('expense-table').classList.add('d-none');
+        document.getElementById('receipt-table').classList.remove('d-none');
+
+        this.classList.add('active');
+        document.getElementById('showTable1').classList.remove('active');
+    });
+</script>
+
 @endsection
 
-
+@push('style')
+    @filamentStyles
+    @vite(['resources/css/app.css'])
+    <link rel="stylesheet" href="/css/main/dashboard.css">
+@endpush
+@push('script')
+    @filamentScripts
+    @vite('resources/js/app.js')
+@endpush
